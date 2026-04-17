@@ -93,10 +93,10 @@
     .ham.open span:nth-child(2) { opacity: 0; }
     .ham.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-    /* Mobile drawer overlay */
+    /* Mobile drawer overlay (背景暗幕) */
     .mobile-overlay {
       position: fixed; inset: 0; z-index: 998;
-      background: rgba(0,0,0,0.45);
+      background: rgba(0,0,0,0.5);
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
@@ -108,52 +108,88 @@
       pointer-events: auto;
     }
 
-    /* Mobile drawer */
+    /* Mobile drawer：フルスクリーンオーバーレイ */
     .mobile-drawer {
       display: flex;
-      position: fixed; top: 0; right: 0; bottom: 0; z-index: 999;
-      width: min(80vw, 300px);
+      position: fixed; inset: 0; z-index: 999;
       background: #fff;
-      transform: translateX(100%);
-      visibility: hidden;
-      transition: transform 0.35s cubic-bezier(.4,0,.2,1), visibility 0.35s;
       flex-direction: column;
       overflow-y: auto;
-      padding: calc(var(--nav-h) + 1.5rem) 1.5rem 2rem;
-      padding-bottom: calc(2rem + var(--safe-bottom));
-      box-shadow: -4px 0 24px rgba(0,0,0,0.12);
+      transform: translateY(-100%);
+      visibility: hidden;
+      transition: transform 0.38s cubic-bezier(.4,0,.2,1), visibility 0.38s;
+      padding: 0;
     }
     .mobile-drawer.open {
-      transform: translateX(0);
+      transform: translateY(0);
       visibility: visible;
     }
-    .mobile-drawer a {
-      display: flex; align-items: center;
-      padding: 1rem 0;
+
+    /* ドロワーヘッダー */
+    .drawer-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%;
+      height: var(--nav-h);
       border-bottom: 1px solid var(--border);
-      font-size: 1rem; font-weight: 500; color: var(--text);
+      flex-shrink: 0;
+    }
+    .drawer-header-logo {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1rem; font-weight: 700; color: var(--primary);
+    }
+    .drawer-header-logo span { color: var(--accent-dark); }
+    .drawer-close {
+      background: none; border: none; cursor: pointer;
+      width: 44px; height: 44px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; color: var(--text-muted);
+      border-radius: 50%;
+      transition: background 0.2s;
+      margin-right: -8px;
+    }
+    .drawer-close:active { background: var(--border); }
+
+    /* ドロワーリンク一覧 */
+    .drawer-nav {
+      flex: 1;
+      display: flex; flex-direction: column;
+      padding: 1rem 5% 1.5rem;
+    }
+    .mobile-drawer a.drawer-link {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 1.05rem; font-weight: 500; color: var(--text);
       text-decoration: none; letter-spacing: 0.04em;
     }
-    .mobile-drawer a:last-child { border-bottom: none; }
-    .mobile-drawer a::before { content: '›'; margin-right: 0.7rem; color: var(--primary); font-size: 1.2rem; }
-    .mobile-drawer .drawer-cta {
-      margin-top: 1.5rem;
-      display: block; text-align: center;
+    .mobile-drawer a.drawer-link::after {
+      content: '›'; color: var(--primary); font-size: 1.3rem; opacity: 0.6;
+    }
+    .mobile-drawer a.drawer-link:active { background: var(--bg); margin: 0 -5%; padding-left: 5%; padding-right: 5%; }
+
+    /* ドロワー下部CTA */
+    .drawer-actions {
+      padding: 1.2rem 5%;
+      padding-bottom: calc(1.2rem + var(--safe-bottom));
+      display: flex; flex-direction: column; gap: 0.8rem;
+      border-top: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .mobile-drawer .drawer-tel {
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
       background: var(--primary); color: #fff;
       padding: 1rem; border-radius: 10px;
-      font-weight: 700; letter-spacing: 0.06em;
-      font-size: 0.95rem;
+      font-weight: 700; letter-spacing: 0.04em; font-size: 1rem;
+      text-decoration: none;
     }
-    .mobile-drawer .drawer-cta::before { display: none; }
-    .mobile-drawer .drawer-tel {
-      margin-top: 0.8rem;
-      display: block; text-align: center;
-      background: var(--accent); color: #fff;
-      padding: 1rem; border-radius: 10px;
-      font-weight: 700; letter-spacing: 0.06em;
-      font-size: 0.95rem;
+    .mobile-drawer .drawer-cta {
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+      background: var(--bg); color: var(--primary);
+      border: 2px solid var(--primary);
+      padding: 0.9rem; border-radius: 10px;
+      font-weight: 700; letter-spacing: 0.04em; font-size: 0.95rem;
+      text-decoration: none;
     }
-    .mobile-drawer .drawer-tel::before { display: none; }
 
     /* ── HERO ── */
     #hero {
@@ -641,17 +677,25 @@
 <!-- Mobile Overlay -->
 <div class="mobile-overlay" id="overlay"></div>
 
-<!-- Mobile Drawer -->
-<nav class="mobile-drawer" id="drawer" aria-hidden="true">
-  <a href="#about" class="drawer-link">事業所について</a>
-  <a href="#work" class="drawer-link">仕事内容</a>
-  <a href="#schedule" class="drawer-link">一日の流れ</a>
-  <a href="#flow" class="drawer-link">ご利用の流れ</a>
-  <a href="#faq" class="drawer-link">よくある質問</a>
-  <a href="#company" class="drawer-link">会社概要・アクセス</a>
-  <a href="tel:0522693011" class="drawer-tel">📞 052-269-3011　電話する</a>
-  <a href="#contact" class="drawer-cta">✉ お問い合わせ</a>
-</nav>
+<!-- Mobile Drawer (フルスクリーンメニュー) -->
+<div class="mobile-drawer" id="drawer" aria-hidden="true" role="dialog" aria-label="ナビゲーションメニュー">
+  <div class="drawer-header">
+    <span class="drawer-header-logo"><span>Long</span>Support</span>
+    <button class="drawer-close" id="drawerClose" aria-label="メニューを閉じる">✕</button>
+  </div>
+  <nav class="drawer-nav">
+    <a href="#about"    class="drawer-link">事業所について</a>
+    <a href="#work"     class="drawer-link">仕事内容</a>
+    <a href="#schedule" class="drawer-link">一日の流れ</a>
+    <a href="#flow"     class="drawer-link">ご利用の流れ</a>
+    <a href="#faq"      class="drawer-link">よくある質問</a>
+    <a href="#company"  class="drawer-link">会社概要・アクセス</a>
+  </nav>
+  <div class="drawer-actions">
+    <a href="tel:0522693011" class="drawer-tel">📞 052-269-3011　電話で問い合わせる</a>
+    <a href="#contact"       class="drawer-cta">✉ メールで問い合わせる</a>
+  </div>
+</div>
 
 <!-- HERO -->
 <section id="hero">
@@ -1088,9 +1132,10 @@
 
 <script>
   /* ── Hamburger menu ── */
-  const hamBtn = document.getElementById('hamBtn');
-  const overlay = document.getElementById('overlay');
-  const drawer = document.getElementById('drawer');
+  const hamBtn     = document.getElementById('hamBtn');
+  const overlay    = document.getElementById('overlay');
+  const drawer     = document.getElementById('drawer');
+  const drawerClose = document.getElementById('drawerClose');
 
   function openMenu() {
     hamBtn.classList.add('open');
@@ -1113,6 +1158,7 @@
     hamBtn.classList.contains('open') ? closeMenu() : openMenu();
   });
   overlay.addEventListener('click', closeMenu);
+  drawerClose.addEventListener('click', closeMenu);
   drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
 
   /* ── Scroll-triggered fade-in ── */
