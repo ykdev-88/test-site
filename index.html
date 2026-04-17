@@ -1215,7 +1215,7 @@
     </p>
   </div>
   <div class="footer-copy">
-    <p>&copy; 2013 Long Support Co., Ltd.<br>All Rights Reserved.</p>
+    <p>&copy; 2013–<span id="copy-year"></span> Long Support Co., Ltd.<br>All Rights Reserved.</p>
   </div>
 </footer>
 
@@ -1314,7 +1314,7 @@
   }
   modalClose.addEventListener('click', closeModal);
   sendModal.addEventListener('click', (e) => { if (e.target === sendModal) closeModal(); });
-  const floatingCta = document.getElementById('floatingCta');
+  document.getElementById('copy-year').textContent = new Date().getFullYear();
   const contactSection = document.getElementById('contact');
   const ctaObserver = new IntersectionObserver((entries) => {
     floatingCta.style.opacity = entries[0].isIntersecting ? '0' : '1';
