@@ -467,8 +467,9 @@
     .map-wrap {
       border-radius: 18px; overflow: hidden;
       box-shadow: 0 8px 32px rgba(0,0,0,0.10);
-      height: 360px;
+      height: 360px; position: relative;
     }
+    .map-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
 
     /* ── CONTACT ── */
     #contact {
@@ -1132,52 +1133,24 @@
       <tr><th>対象者</th><td>身体・精神・知的障がい者</td></tr>
     </table>
     <div>
-      <div class="map-wrap" id="map"></div>
-      <!-- Leaflet CSS -->
-      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-      <!-- Leaflet JS -->
-      <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV/XN/WLcE=" crossorigin=""></script>
-      <script>
-        (function() {
-          const lat = 35.16700, lng = 136.90810;
-          const map = L.map('map', { zoomControl: true, scrollWheelZoom: false }).setView([lat, lng], 16);
-          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-            maxZoom: 19
-          }).addTo(map);
-          const icon = L.divIcon({
-            className: '',
-            html: `<div style="
-              background:#2d6a4f;color:#fff;border-radius:50% 50% 50% 0;
-              width:36px;height:36px;display:flex;align-items:center;justify-content:center;
-              font-size:1.1rem;box-shadow:0 3px 10px rgba(0,0,0,0.3);
-              transform:rotate(-45deg);border:2px solid #fff;">
-              <span style="transform:rotate(45deg)">📍</span>
-            </div>`,
-            iconSize: [36, 36], iconAnchor: [18, 36], popupAnchor: [0, -38]
-          });
-          L.marker([lat, lng], { icon })
-            .addTo(map)
-            .bindPopup(`
-              <div style="font-family:'Noto Sans JP',sans-serif;min-width:180px;line-height:1.7;">
-                <strong style="color:#2d6a4f;font-size:0.95rem;">株式会社ロングサポート</strong><br>
-                <span style="font-size:0.82rem;color:#6b7280;">
-                  愛知県名古屋市中区栄3-19-19<br>
-                  フォルテ栄ビル 7F
-                </span><br>
-                <a href="https://maps.google.com/?q=35.16700,136.90810" target="_blank"
-                   style="font-size:0.8rem;color:#2d6a4f;font-weight:700;">
-                  Googleマップで開く →
-                </a>
-              </div>
-            `, { maxWidth: 220 })
-            .openPopup();
-        })();
-      </script>
+      <!-- OpenStreetMap 公式iframeによる直接埋め込み（APIキー不要・完全無料） -->
+      <div class="map-wrap">
+        <iframe
+          src="https://www.openstreetmap.org/export/embed.html?bbox=136.9031%2C35.1640%2C136.9131%2C35.1700&amp;layer=mapnik&amp;marker=35.16700%2C136.90810"
+          title="株式会社ロングサポート 地図"
+          allowfullscreen
+          loading="lazy"
+        ></iframe>
+      </div>
       <p style="margin-top:1rem;font-size:0.85rem;color:var(--text-muted);line-height:2;">
         📍 地下鉄東山線・名城線「栄駅」より徒歩約5分<br>
         📍 地下鉄名城線「矢場町駅」より徒歩約5分<br>
-        🏢 フォルテ栄ビル 7F
+        🏢 フォルテ栄ビル 7F<br>
+        <a href="https://www.openstreetmap.org/?mlat=35.16700&amp;mlon=136.90810#map=16/35.16700/136.90810"
+           target="_blank" rel="noopener"
+           style="color:var(--primary);font-weight:700;font-size:0.85rem;">
+          🗺 大きな地図で見る →
+        </a>
       </p>
     </div>
   </div>
