@@ -114,24 +114,24 @@
       position: fixed; inset: 0; z-index: 999;
       background: #fff;
       flex-direction: column;
-      overflow-y: auto;
+      overflow: hidden; /* drawer自体はスクロールしない */
       transform: translateY(-100%);
       visibility: hidden;
       transition: transform 0.38s cubic-bezier(.4,0,.2,1), visibility 0.38s;
-      padding: 0;
     }
     .mobile-drawer.open {
       transform: translateY(0);
       visibility: visible;
     }
 
-    /* ドロワーヘッダー */
+    /* ドロワーヘッダー：常に最上部に固定 */
     .drawer-header {
       display: flex; align-items: center; justify-content: space-between;
       padding: 0 5%;
       height: var(--nav-h);
       border-bottom: 1px solid var(--border);
-      flex-shrink: 0;
+      flex-shrink: 0; /* 絶対に縮まない */
+      background: #fff;
     }
     .drawer-header-logo {
       font-family: 'Noto Serif JP', serif;
@@ -142,45 +142,48 @@
       background: none; border: none; cursor: pointer;
       width: 44px; height: 44px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.5rem; color: var(--text-muted);
+      font-size: 1.4rem; color: var(--text-muted);
       border-radius: 50%;
       transition: background 0.2s;
       margin-right: -8px;
     }
     .drawer-close:active { background: var(--border); }
 
-    /* ドロワーリンク一覧 */
+    /* ドロワーリンク一覧：この部分だけスクロール */
     .drawer-nav {
       flex: 1;
-      display: flex; flex-direction: column;
-      padding: 1rem 5% 1.5rem;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 0.5rem 5% 1rem;
     }
     .mobile-drawer a.drawer-link {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 1.1rem 0;
+      padding: 1.15rem 0;
       border-bottom: 1px solid var(--border);
       font-size: 1.05rem; font-weight: 500; color: var(--text);
       text-decoration: none; letter-spacing: 0.04em;
+      min-height: 52px;
     }
+    .mobile-drawer a.drawer-link:last-child { border-bottom: none; }
     .mobile-drawer a.drawer-link::after {
       content: '›'; color: var(--primary); font-size: 1.3rem; opacity: 0.6;
     }
-    .mobile-drawer a.drawer-link:active { background: var(--bg); margin: 0 -5%; padding-left: 5%; padding-right: 5%; }
 
-    /* ドロワー下部CTA */
+    /* ドロワー下部CTA：常に最下部に固定 */
     .drawer-actions {
+      flex-shrink: 0; /* 絶対に縮まない */
       padding: 1.2rem 5%;
       padding-bottom: calc(1.2rem + var(--safe-bottom));
       display: flex; flex-direction: column; gap: 0.8rem;
-      border-top: 1px solid var(--border);
-      flex-shrink: 0;
+      border-top: 2px solid var(--border);
+      background: #fff;
     }
     .mobile-drawer .drawer-tel {
       display: flex; align-items: center; justify-content: center; gap: 0.5rem;
       background: var(--primary); color: #fff;
       padding: 1rem; border-radius: 10px;
       font-weight: 700; letter-spacing: 0.04em; font-size: 1rem;
-      text-decoration: none;
+      text-decoration: none; min-height: 52px;
     }
     .mobile-drawer .drawer-cta {
       display: flex; align-items: center; justify-content: center; gap: 0.5rem;
@@ -188,7 +191,7 @@
       border: 2px solid var(--primary);
       padding: 0.9rem; border-radius: 10px;
       font-weight: 700; letter-spacing: 0.04em; font-size: 0.95rem;
-      text-decoration: none;
+      text-decoration: none; min-height: 52px;
     }
 
     /* ── HERO ── */
